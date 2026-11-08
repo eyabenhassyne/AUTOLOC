@@ -1,10 +1,14 @@
 package tn.esprit.autoloc.domain;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,4 +22,8 @@ public class Equipement {
     private Long idEquipement;
 
     private String libelle;
+
+    @ManyToMany(mappedBy = "equipements")
+    @JsonIgnore
+    private List<Vehicule> vehicules = new ArrayList<>();
 }
