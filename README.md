@@ -1,8 +1,8 @@
 # AutoLoc API
 
 Single Spring Boot application for car rental management, based on Eya's
-original `autoloc-api` and adapted CRUD modules from Mahdi Hamzaoui's project
-(see [NOTICE](NOTICE)). Java 17 and Spring Boot 4.1.1 are retained.
+original `autoloc-api` and adapted CRUD modules 
+. Java 17 and Spring Boot 4.1.1 are retained.
 
 ## Run on Windows
 
