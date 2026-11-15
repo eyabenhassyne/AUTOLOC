@@ -14,4 +14,9 @@ public interface IReservationService {
     Reservation update(Reservation reservation);
 
     void delete(Long id);
+
+    tn.esprit.autoloc.dto.ReservationContractResponse createWithContract(
+            tn.esprit.autoloc.dto.ReservationContractRequest request);
+
+    tn.esprit.autoloc.domain.Contrat getContract(Long id);
 }

@@ -1,6 +1,8 @@
 package tn.esprit.autoloc.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +22,7 @@ public class Paiement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPaiement;
 
-    private BigDecimal montant;
+    @Positive private BigDecimal montant;
     private LocalDate datePaiement;
 
     @Enumerated(EnumType.STRING)

@@ -78,7 +78,10 @@ parents; no broad new deletion cascades were introduced.
 Vehicles retain the original required fields and unique registration constraint.
 Both input projects use entities directly, with no DTO layer, authentication, or
 advanced booking/payment business rules. CRUD semantics are retained, including
-null responses for missing records and repository-save behavior on updates.
+successful legacy endpoint responses. Missing records now return 404; invalid
+requests return 400 and relationship conflicts return 409. Updates require an
+existing record and preserve omitted relationships. See [Workflows](WORKFLOWS.md)
+for atomic creation, assignments, payment management, examples and validation.
 
 ## Verification
 
@@ -90,6 +93,10 @@ H2 tests do not substitute for deployment verification against MySQL.
 
 ## Git integration
 
-The integration is on `integration/autoloc-springboot-merge`. After reviewing
+The completed workflows are on `feature/autoloc-missing-workflows`. After reviewing
 the GitHub comparison and green checks, merge its pull request into `main` using
 GitHub's normal merge action. No force push or history rewrite is required.
+
+## Business workflows
+
+See [AutoLoc workflows](WORKFLOWS.md) for new transactional operations and conventional CRUD routes.

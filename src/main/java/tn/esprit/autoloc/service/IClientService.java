@@ -14,4 +14,9 @@ public interface IClientService {
     Client update(Client client);
 
     void delete(Long id);
+
+    tn.esprit.autoloc.dto.ClientReservationsResponse createWithReservations(
+            tn.esprit.autoloc.dto.ClientReservationsRequest request);
+
+    List<tn.esprit.autoloc.domain.Reservation> getReservations(Long id);
 }

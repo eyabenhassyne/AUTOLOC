@@ -1,39 +1,57 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
-import tn.esprit.autoloc.domain.Agence;
-import tn.esprit.autoloc.repository.AgenceRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import tn.esprit.autoloc.domain.*;
+import tn.esprit.autoloc.repository.*;
 
 import java.util.List;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
+@Transactional
 public class AgenceServiceIMPL implements IAgenceService {
-    AgenceRepository repository;
+    private final AgenceRepository repository;
+    private final EntitySupport support;
 
     @Override
-    public Agence create(Agence agence) {
-        return repository.save(agence);
+    public Agence create(Agence input) {
+        support.checkNew(input);
+        support.prepare(input);
+
+        return repository.save(input);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Agence getById(Long id) {
-        return repository.findById(id).orElse(null);
+        return support.require(Agence.class, id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Agence> getAll() {
         return repository.findAll();
     }
 
     @Override
-    public Agence update(Agence agence) {
-        return repository.save(agence);
+    public Agence update(Agence input) {
+        Agence existing = getById(input.getIdAgence());
+        support.prepare(input);
+        existing.setNom(input.getNom());
+        existing.setVille(input.getVille());
+        existing.setAdresse(input.getAdresse());
+        existing.setTelephone(input.getTelephone());
+
+        return existing;
     }
 
     @Override
     public void delete(Long id) {
-        repository.deleteById(id);
+        repository.delete(getById(id));
+        repository.flush();
     }
 }

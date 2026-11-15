@@ -1,18 +1,20 @@
 package tn.esprit.autoloc.domain;
 
-import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,7 +28,7 @@ public class Contrat {
     private Long idContrat;
 
     private LocalDate dateSignature;
-    private BigDecimal montantTotal;
+    @PositiveOrZero private BigDecimal montantTotal;
     private boolean valide;
 
     @OneToOne

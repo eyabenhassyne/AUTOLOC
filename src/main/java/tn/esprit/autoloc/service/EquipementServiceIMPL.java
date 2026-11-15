@@ -1,39 +1,54 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
-import tn.esprit.autoloc.domain.Equipement;
-import tn.esprit.autoloc.repository.EquipementRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import tn.esprit.autoloc.domain.*;
+import tn.esprit.autoloc.repository.*;
 
 import java.util.List;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
+@Transactional
 public class EquipementServiceIMPL implements IEquipementService {
-    EquipementRepository repository;
+    private final EquipementRepository repository;
+    private final EntitySupport support;
 
     @Override
-    public Equipement create(Equipement equipement) {
-        return repository.save(equipement);
+    public Equipement create(Equipement input) {
+        support.checkNew(input);
+        support.prepare(input);
+
+        return repository.save(input);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Equipement getById(Long id) {
-        return repository.findById(id).orElse(null);
+        return support.require(Equipement.class, id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Equipement> getAll() {
         return repository.findAll();
     }
 
     @Override
-    public Equipement update(Equipement equipement) {
-        return repository.save(equipement);
+    public Equipement update(Equipement input) {
+        Equipement existing = getById(input.getIdEquipement());
+        support.prepare(input);
+        existing.setLibelle(input.getLibelle());
+
+        return existing;
     }
 
     @Override
     public void delete(Long id) {
-        repository.deleteById(id);
+        repository.delete(getById(id));
+        repository.flush();
     }
 }

@@ -1,16 +1,18 @@
 package tn.esprit.autoloc.domain;
 
-import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -25,7 +27,11 @@ public class Client {
 
     private String nom;
     private String prenom;
+
+    @Email
+    @Size(max = 255)
     private String email;
+
     private String telephone;
     private String numPermis;
     private LocalDate dateInscription;

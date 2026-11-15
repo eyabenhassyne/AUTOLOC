@@ -1,39 +1,64 @@
 package tn.esprit.autoloc.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
-import tn.esprit.autoloc.domain.Maintenance;
-import tn.esprit.autoloc.repository.MaintenanceRepository;
+import org.springframework.transaction.annotation.Transactional;
+
+import tn.esprit.autoloc.domain.*;
+import tn.esprit.autoloc.repository.*;
 
 import java.util.List;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
+@Transactional
 public class MaintenanceServiceIMPL implements IMaintenanceService {
-    MaintenanceRepository repository;
+    private final MaintenanceRepository repository;
+    private final EntitySupport support;
 
     @Override
-    public Maintenance create(Maintenance maintenance) {
-        return repository.save(maintenance);
+    public Maintenance create(Maintenance input) {
+        support.checkNew(input);
+        support.prepare(input);
+
+        return repository.save(input);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Maintenance getById(Long id) {
-        return repository.findById(id).orElse(null);
+        return support.require(Maintenance.class, id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Maintenance> getAll() {
         return repository.findAll();
     }
 
     @Override
-    public Maintenance update(Maintenance maintenance) {
-        return repository.save(maintenance);
+    public Maintenance update(Maintenance input) {
+        Maintenance existing = getById(input.getIdMaintenance());
+        support.prepare(input);
+        existing.setDateDebut(input.getDateDebut());
+        existing.setDateFin(input.getDateFin());
+        existing.setDescription(input.getDescription());
+        if (input.getVehicule() != null) existing.setVehicule(input.getVehicule());
+
+        return existing;
     }
 
     @Override
     public void delete(Long id) {
-        repository.deleteById(id);
+        repository.delete(getById(id));
+        repository.flush();
+    }
+
+    @Override
+    public Maintenance assignVehicule(Long maintenanceId, Long vehiculeId) {
+        Maintenance maintenance = getById(maintenanceId);
+        maintenance.setVehicule(support.require(Vehicule.class, vehiculeId));
+        return maintenance;
     }
 }

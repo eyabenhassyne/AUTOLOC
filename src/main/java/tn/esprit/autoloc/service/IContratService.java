@@ -14,4 +14,9 @@ public interface IContratService {
     Contrat update(Contrat contrat);
 
     void delete(Long id);
+
+    List<tn.esprit.autoloc.domain.Paiement> getPayments(Long id);
+
+    tn.esprit.autoloc.domain.Paiement addPayment(
+            Long id, tn.esprit.autoloc.domain.Paiement payment);
 }
