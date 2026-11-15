@@ -1,0 +1,8 @@
+AutoLoc integration attribution
+
+The repository, service interfaces and implementations, and REST controller
+modules under src/main/java/tn/esprit/autoloc were adapted from the project
+autoLocMahdiHamzaoui-master supplied by Mahdi Hamzaoui (the user's classmate).
+Package names and entity references were adapted to Eya's original autoloc-api.
+The original application, domain model, database mappings, validation dependency,
+and Git history remain the foundation of this project.
